@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <header></header>
 <body class="w-full">
     <div class="w-full bg-[#0d0f0f]"><?php include('nav.php')?></div>
-    <div class="[font-family:'Kanit'] bg-[#dfe0dc] w-full flex flex-col md:flex-row md:justify-around md:items-around justify-center items-center text-[#dfe0dc]">
+    <div class="[font-family:'Kanit'] bg-[#dfe0dc] w-full flex flex-col md:flex-row md:justify-around md:items-around justify-center items-center">
         <?php include ('header.php'); ?>
         <div class="w-full md:w-[50%] px-4 py-2 flex flex-col justify-center items-center my-3">
             <img class="w-[96px] h-[96px]" src="https://img.icons8.com/fluency-systems-regular/96/add-user-male--v1.png" alt="add-user-male--v1"/>

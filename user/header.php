@@ -19,22 +19,30 @@
     $cart_result = $cart_query->get_result();
 ?>
 
-<div class="fixed top-0 left-0 right-0 bg-blue-500 text-white p-4 flex justify-between items-center shadow-md z-50">
-    <h1 class="text-xl font-semibold">Expedition Shop</h1>
+<div class="fixed top-0 left-0 right-0 bg-[#0d0f0f] text-[#dfe0dc] p-4 flex justify-between items-center shadow-md z-50">
+    <div class="flex justify-start items-center ml-2 rounded-lg bg-[#dfe0dc]">
+        <a href="index.php" class="mb-1 text-[#0d0f0f] text-lg md:text-lg lg:text-lg px-2 py-1 flex flex-col justify-center items-center [font-family:'Orbitron']">
+            <img class="w-[20px] h-[20px] md:w-[20px] md:h-[20px] lg:w-[20px] lg:h-[20px]" src="https://img.icons8.com/ios-filled/100/mission-of-a-company.png" alt="mission-of-a-company"/>
+            Expedition
+        </a>
+    </div>
+    <div class= "flex justify-end items-center">
+        <form action="search_results.php" method="GET" class="flex items-center space-x-2 mx-4 my-2">
+            <input type="text" name="query" placeholder="Search..." class="p-2 rounded text-black">
+            <button type="submit" class="bg-[#dfe0dc] p-2 rounded hover:bg-[#808080] text-[#0d0f0f]">Search</button>
+        </form>
+        <a href="index.php" class="btn bg-[#dfe0dc] p-2 rounded hover:bg-[#808080] mx-4 my-2 text-[#0d0f0f]">Home</a>
+        <!-- View Cart Button with Total Item Count -->
+        <button id="viewCartBtn" class="flex items-center space-x-2 bg-[#dfe0dc] p-2 rounded hover:bg-[#808080] mx-4 my-2">
+            <span class="text-[#0d0f0f]">View Cart (<?= $total_items ?>)</span>
+        </button>
+        <button id="logoutBtn" class="bg-[#dfe0dc] p-2 rounded text-[#0d0f0f] hover:bg-[#808080] mx-4 my-2 text-[#0d0f0f]">Logout</button>
+    </div>
     <!-- Search Bar -->
-    <form action="search_results.php" method="GET" class="flex items-center space-x-2">
-        <input type="text" name="query" placeholder="Search..." class="p-2 rounded text-black">
-        <button type="submit" class="bg-green-500 p-2 rounded hover:bg-green-600">Search</button>
-    </form>
-    <!-- View Cart Button with Total Item Count -->
-    <button id="viewCartBtn" class="flex items-center space-x-2 bg-blue-700 p-2 rounded hover:bg-blue-800">
-        <span>View Cart (<?= $total_items ?>)</span>
-    </button>
-    <button id="logoutBtn" class="bg-red-500 p-2 rounded hover:bg-red-600">Logout</button>
 </div>
 
 <!-- Sidebar -->
-<div id="cartSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end translate-x-full hidden">
+<div id="cartSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end translate-x-full hidden mt-[50px]">
     <div class="bg-white w-1/3 h-full p-4 overflow-y-auto">
         <h2 class="text-lg font-semibold mb-4">Your Cart</h2>
         <!-- Cart Items -->

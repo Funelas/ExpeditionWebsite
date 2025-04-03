@@ -16,11 +16,6 @@ if ($table_id == 'products') {
     if ($search) {
         $query .= " WHERE account_id LIKE '%$search%' OR name LIKE '%$search%' OR email LIKE '%$search%' OR address LIKE '%$search%' OR password LIKE '%$search%' OR account_type LIKE '%$search%'";
     }
-} elseif ($table_id == 'orders') {
-    $query = "SELECT * FROM orders";
-    if ($search) {
-        $query .= " WHERE order_date LIKE '%$search%' OR total_amount LIKE '%$search%' OR status LIKE '%$search%'";
-    }
 } else {
     $query = ""; // Invalid table_id
 }
@@ -39,17 +34,10 @@ $result = $connections->query($query);
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-
-    <h2 class="text-2xl font-semibold mb-4 text-center">Manage <?= ucfirst($table_id) ?></h2>
-    <div class="mb-4">
-        <form method="GET" action="records.php">
-            <input type="hidden" name="table_id" value="<?= $table_id ?>">
-            <input type="text" name="search" placeholder="Search..." class="p-2 border rounded" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Search</button>
-        </form>
+    <div class="flex items-center justify-end">
+        <?php include('header.php');?>
     </div>
-    <h3>Add a Record</h3>
-    <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onclick="document.getElementById('addModal').classList.remove('hidden')">Add New Record</button>
+    <h2 class="text-2xl font-semibold mb-4 text-center">Manage <?= ucfirst($table_id) ?></h2>
     <?php if ($result && $result->num_rows > 0): ?>
     <table class="min-w-full table-auto bg-white border border-gray-300 shadow-md rounded">
         <thead>
@@ -71,11 +59,6 @@ $result = $connections->query($query);
                     <th class="px-4 py-2 text-left border">Password</th>
                     <th class="px-4 py-2 text-left border">Account Type</th>
                     <th class="px-4 py-2 text-left border">Options</th>
-                <?php elseif ($table_id === 'orders'): ?>
-                    <th class="px-4 py-2 text-left border">Order Date</th>
-                    <th class="px-4 py-2 text-left border">Total Amount</th>
-                    <th class="px-4 py-2 text-left border">Status</th>
-                    <th class="px-4 py-2 text-left border">Actions</th>
                 <?php endif; ?>
             </tr>
         </thead>
@@ -106,14 +89,6 @@ $result = $connections->query($query);
                         <td class="px-4 py-2 border">
                             <button class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600" onclick="document.getElementById('editForm<?= $row['account_id'] ?>').classList.remove('hidden')">Edit</button>
                             <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600" onclick="showDeleteModal(<?= $row['account_id'] ?>, '<?= $table_id ?>')">Delete</button>
-                        </td>
-                    <?php elseif ($table_id === 'orders'): ?>
-                        <td class="px-4 py-2 border"><?= htmlspecialchars($row['order_date']) ?></td>
-                        <td class="px-4 py-2 border">₱<?= htmlspecialchars($row['total_amount']) ?></td>
-                        <td class="px-4 py-2 border"><?= htmlspecialchars($row['status']) ?></td>
-                        <td class="px-4 py-2 border">
-                            <button class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">View</button>
-                            <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</button>
                         </td>
                     <?php endif; ?>
                 </tr>
@@ -233,10 +208,9 @@ $result = $connections->query($query);
             </form>
         </div>
     </div>
-
     <script>
         function showDeleteModal(id,table_id) {
-            const message = `Are you sure you want to delete Account I.D #${id}?`
+            const message = `Are you sure you want to delete ${table_id} I.D #${id}?`
             document.getElementById('deleteModal').classList.remove('hidden');
             document.getElementById('confirmDelete').onclick = function() {
                 window.location.href = `delete_record.php?table_id=${table_id}&id=${id}`;
@@ -254,4 +228,5 @@ $result = $connections->query($query);
 
 
 </body>
+
 </html>

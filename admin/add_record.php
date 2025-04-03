@@ -34,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $address = $_POST['address'];
         $password = $_POST['password'];
         $account_type = $_POST['account_type'];
-
+        if ($account_type != 1){
+            $account_type = 2;
+        }
         // Insert the new account into the database
         $insert_query = "INSERT INTO accounts (name, email, address, password, account_type) VALUES ('$name', '$email', '$address', '$password', '$account_type')";
         if ($connections->query($insert_query)) {

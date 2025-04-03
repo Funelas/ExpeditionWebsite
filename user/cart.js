@@ -18,10 +18,19 @@ function openCartSidebar() {
         sidebar.classList.add('translate-x-full');
     } else {
         // Open the sidebar (remove 'hidden' class, move it to the left)
+        document.getElementById('closeCartBtn').addEventListener('click', function() {
+            closeCartSidebar();
+        });
         sidebar.classList.add('translate-x-0');
         sidebar.classList.remove('translate-x-full');
          // Slide the sidebar in
     }
+}
+
+function closeCartSidebar(){
+    console.log("Hello I ran");
+    sidebar.classList.remove('translate-x-0');
+    sidebar.classList.add('translate-x-full');
 }
 
 // Connect "View Cart" button to open the sidebar

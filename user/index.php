@@ -97,27 +97,50 @@ foreach ($categories as $category) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expedition Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     
 </head>
 
-<body class="bg-gray-100">
-<?php include('header.php'); ?>
-    <div class="container mx-auto p-4">
+<body class="bg-gray-100 h-full [font-family:'Kanit'] flex flex-col justify-center items-center">
+    
+    <?php include('header.php'); ?>
+    <div class="container mx-auto p-4 mt-[100px] flex flex-col justify-center items-center">
         <h1 class="text-2xl font-bold mb-4">Welcome to Expedition Shop</h1>
 
         <!-- Category Filter Radio Buttons -->
-        <div class="mb-4">
-            <label><input type="radio" name="category" value="All" checked onclick="filterCategory('All')"> All</label>
+        <div class="mb-4 flex flex-col md:flex-row justify-center items-center">
+            <!-- All Category (Pre-selected) -->
+            <input type="radio" id="all" name="category" value="All" class="hidden" onclick="filterCategory('All'); highlightSelectedLabel(this);" />
+            <label for="all" class="py-2 px-4 cursor-pointer text-xl rounded-full transition-all" id="label-all">All</label>
+
+            <!-- Dynamically Generated Categories -->
             <?php foreach ($categories as $category): ?>
-                <label><input type="radio" name="category" value="<?= $category ?>" onclick="filterCategory('<?= $category ?>')"> <?= $category ?></label>
+                
+                <input type="radio" id="<?= $category ?>" name="category" value="<?= $category ?>" class="hidden" onclick="filterCategory('<?= $category ?>'); highlightSelectedLabel(this);" />
+                <label for="<?= $category ?>" class="py-2 px-4 cursor-pointer text-xl rounded-full transition-all" id="label-<?= $category ?>"><?= $category ?></label>
             <?php endforeach; ?>
         </div>
-
+    
+        <!--  -->
         <!-- Products by Category -->
         <?php foreach ($products_by_category as $category => $products): ?>
-            <div class="category-section" data-category="<?= $category ?>">
-                <h2 class="text-xl font-semibold my-2"><?= $category ?> Bikes</h2>
-                <div class="flex flex-wrap gap-4">
+            <?php 
+                    // Define the icons for each category (selected and unselected)
+                    $icons = [
+                        "Mountain" => '<img class="w-[50px] h-[50px]" src="https://img.icons8.com/fluency-systems-regular/96/mountain.png" alt="mountain"/>',
+                        "Road" => '<img class="w-[50px] h-[50px]" src="https://img.icons8.com/fluency-systems-regular/96/road.png" alt="road"/>',
+                        "Gravel" => '<img class="w-[50px] h-[50px]" src="https://img.icons8.com/fluency-systems-regular/96/stones.png" alt="stones"/>',
+                        "Accessory" => '<img class="w-[50px] h-[50px]" src="https://img.icons8.com/fluency-systems-regular/96/settings-3.png" alt="settings-3"/>'
+                    ];
+                    $iconSvg = $icons[$category] ?? '';
+                ?>
+                
+            <div class="category-section flex flex-col justify-center items-center mt-[30px]" data-category="<?= $category ?>">
+                <div class="flex flex-col justify-center items-center">
+                    <?= $iconSvg ?>
+                    <h2 class="text-2xl font-semibold my-2"><?= $category ?> Bikes</h2>
+                </div>
+                <div class="flex flex-wrap gap-4 justify-center items-center">
                     <?php foreach ($products as $product): ?>
                         <div class="bg-white rounded-lg shadow-md p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 hover:shadow-xl transition">
                             <a href="product_details.php?product_id=<?= $product['product_id'] ?>">
@@ -126,7 +149,7 @@ foreach ($categories as $category) {
                                 <p class="text-gray-700">Stock: <?= htmlspecialchars($product['stock']) ?></p>
                                 <p class="text-gray-900 font-bold">₱<?= htmlspecialchars($product['price']) ?></p>
                             </a>
-                            <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
+                            <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>" class="w-full flex justify-center items-center">
                                 <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
                                 <button type="submit" name="add_to_cart" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Add to Cart</button>
                             </form>
@@ -182,5 +205,21 @@ foreach ($categories as $category) {
         window.location.href = 'logout.php';
         
     });
+</script>
+<script>
+    // Function to highlight the label of the selected radio button
+    function highlightSelectedLabel(radioButton) {
+        // Get all labels
+        const labels = document.querySelectorAll('label');
+
+        // Remove the 'bg-blue-500' class from all labels
+        labels.forEach(label => {
+            label.classList.remove('bg-[#0d0f0f]', 'text-white');
+        });
+
+        // Add the 'bg-blue-500' and 'text-white' classes to the clicked label
+        const selectedLabel = document.querySelector(`label[for="${radioButton.id}"]`);
+        selectedLabel.classList.add('bg-[#0d0f0f]', 'text-white');
+    }
 </script>
 </html>
