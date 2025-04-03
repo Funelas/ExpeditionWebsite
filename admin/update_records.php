@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $category = $_POST['category'];
         $description = $_POST['description'];
         $price = $_POST['price'];
+        $stock = $_POST['stock'];
         // Handle the image upload
         if (isset($_FILES['product_img']) && $_FILES['product_img']['error'] === UPLOAD_ERR_OK) {
             $image_path = '../images/' . basename($_FILES['product_img']['name']);
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Update the product in the database
-        $update_query = "UPDATE products SET name='$name', category='$category', description='$description', price='$price', image='$image_path' WHERE product_id='$id'";
+        $update_query = "UPDATE products SET name='$name', category='$category', description='$description', price='$price', image='$image_path', stock= '$stock' WHERE product_id='$id'";
         if ($connections->query($update_query)) {
             $message = 'Product updated successfully!';
             echo $message;

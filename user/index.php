@@ -144,7 +144,7 @@ foreach ($categories as $category) {
                     <?php foreach ($products as $product): ?>
                         <div class="bg-white rounded-lg shadow-md p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 hover:shadow-xl transition">
                             <a href="product_details.php?product_id=<?= $product['product_id'] ?>">
-                                <img src="<?= htmlspecialchars($product['image']) ?>" alt="Product Image" class="w-full h-48 object-cover rounded mb-2 cursor-pointer">
+                                <img src="<?= htmlspecialchars($product['image']) ?>" alt="Product Image" class="min-w-full h-48 object-cover rounded mb-2 cursor-pointer">
                                 <h2 class="text-lg font-semibold"> <?= htmlspecialchars($product['name']) ?> </h2>
                                 <p class="text-gray-700">Stock: <?= htmlspecialchars($product['stock']) ?></p>
                                 <p class="text-gray-900 font-bold">₱<?= htmlspecialchars($product['price']) ?></p>

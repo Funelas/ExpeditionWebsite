@@ -32,14 +32,23 @@ $result = $connections->query($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage <?= ucfirst($table_id) ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 p-6">
-    <div class="flex items-center justify-end">
-        <?php include('header.php');?>
+<body class="bg-gray-100 [font-family:'Kanit']">
+    <div class="flex justify-between items-center w-full bg-[#0d0f0f] p-4">
+        <div class="flex justify-start items-center ml-2 rounded-lg bg-[#dfe0dc]">
+            <a href="index.php" class="mb-1 text-[#0d0f0f] text-lg md:text-lg lg:text-lg px-2 py-1 flex flex-col justify-center items-center [font-family:'Orbitron']">
+                <img class="w-[20px] h-[20px] md:w-[20px] md:h-[20px] lg:w-[20px] lg:h-[20px]" src="https://img.icons8.com/ios-filled/100/mission-of-a-company.png" alt="mission-of-a-company"/>
+                Expedition
+            </a>
+        </div>
+        <div class="flex items-center justify-end">
+                <?php include('header.php');?>
+        </div>
     </div>
-    <h2 class="text-2xl font-semibold mb-4 text-center">Manage <?= ucfirst($table_id) ?></h2>
+    <h2 class="text-2xl font-semibold mb-4 text-center text-4xl">Manage <?= ucfirst($table_id) ?></h2>
     <?php if ($result && $result->num_rows > 0): ?>
-    <table class="min-w-full table-auto bg-white border border-gray-300 shadow-md rounded">
+    <table class="w-full table-auto bg-white border border-gray-300 shadow-md rounded mx-2 my-1">
         <thead>
             <tr class="bg-gray-200">
                 <?php if ($table_id === 'products'): ?>
@@ -49,7 +58,7 @@ $result = $connections->query($query);
                     <th class="px-4 py-2 text-left border">Description</th>
                     <th class="px-4 py-2 text-left border">Price</th>
                     <th class="px-4 py-2 text-left border">Category</th>
-                    <th class="px-4 py-2 text-left border">Image Link</th>
+                    <th class="px-4 py-2 text-left border">Image Preview</th>
                     <th class="px-4 py-2 text-left border">Options</th>
                 <?php elseif ($table_id === 'accounts'): ?>
                     <th class="px-4 py-2 text-left border">Account I.D</th>
@@ -66,10 +75,10 @@ $result = $connections->query($query);
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr class="hover:bg-gray-100">
                     <?php if ($table_id === 'products'): ?>
-                        <td class="px-4 py-2 border"><?= htmlspecialchars($row['product_id']) ?></td>
+                        <td class="px-4 py-2 border [max-width:30px]"><?= htmlspecialchars($row['product_id']) ?></td>
                         <td class="px-4 py-2 border [max-width:150px]" ><?= htmlspecialchars($row['name']) ?></td>
                         <td class="px-4 py-2 border"><?= htmlspecialchars($row['stock']) ?></td>
-                        <td class="px-4 py-2 border [max-width:200px]"><?= htmlspecialchars($row['description']) ?></td>
+                        <td class="px-4 py-2 border [max-width:300px]"><?= htmlspecialchars($row['description']) ?></td>
                         <td class="px-4 py-2 border">₱<?= htmlspecialchars($row['price']) ?></td>
                         <td class="px-4 py-2 border"><?= htmlspecialchars($row['category']) ?></td>
                         <td class="px-4 py-2 border [max-width:300px]">
@@ -102,23 +111,40 @@ $result = $connections->query($query);
                                 <input type="hidden" name="id" value="<?= $row['product_id'] ?>">
                                 <input type="hidden" name="current_img" value="<?= $row['image'] ?>">
 
-                                <label for="name">Product Name:</label>
-                                <input type="text" name="name" value="<?= htmlspecialchars($row['name']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="category">Category:</label>
-                                <input type="text" name="category" value="<?= htmlspecialchars($row['category']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="description">Description:</label>
-                                <textarea name="description" class="w-full"><?php echo htmlspecialchars(($row['description']))?></textarea><br>
-
-                                <label for="price">Price:</label>
-                                <input type="text" name="price" value="<?= htmlspecialchars($row['price']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="product_img">Product Image:</label><br>
-                                <input type="file" name="product_img" accept="image/*" class="p-2 border rounded mb-4"><br>
-
-                                <button type="submit" class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600">Update</button>
-                                <button type="button" class="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600" onclick="document.getElementById('editForm<?= $row['product_id'] ?>').classList.add('hidden')">Cancel</button>
+                                <div class= "flex justify-around">
+                                    <div class="flex flex-col mx-3 justify-between">
+                                        <div class= "w-full flex justify-between items-center">
+                                            <label for="name">Product Name:</label>
+                                            <input type="text" name="name" value="<?= htmlspecialchars($row['name']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                        <div class="w-full flex justify-end items-center">
+                                            <label for="category">Category:</label>
+                                            <input type="text" name="category" value="<?= htmlspecialchars($row['category']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col mx-3">
+                                        <div class="flex justify-end w-full items-center">
+                                            <label for="price">Price:</label>
+                                            <input type="text" name="price" value="<?= htmlspecialchars($row['price']) ?>" class="p-2 border rounded w-[250px] mx-2" required><br>
+                                        </div>
+                                        <div class="flex justify-between w-full items-center">
+                                            <label for="stock">Stock:</label>
+                                            <input type="text" name="stock" value="<?= htmlspecialchars($row['stock']) ?>" class="p-2 border rounded w-[250px] mx-2" required><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col justify-center items-center">
+                                    <label for="description">Description:</label>
+                                    <textarea name="description" class="w-[50%] h-[50%]"><?php echo htmlspecialchars(($row['description']))?></textarea><br>
+                                </div>
+                                <div class="flex flex-col justify-center items-center">
+                                    <label for="product_img">Product Image:</label><br>
+                                    <input type="file" name="product_img" accept="image/*" class="p-2 border rounded mb-4"><br>
+                                </div>
+                                <div class="flex justify-around items-center">
+                                    <button type="submit" class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600">Update</button>
+                                    <button type="button" class="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600" onclick="document.getElementById('editForm<?= $row['product_id'] ?>').classList.add('hidden')">Cancel</button>
+                                </div>
                             </form>
                         </td>
                     </tr>
@@ -129,23 +155,37 @@ $result = $connections->query($query);
                                 <input type="hidden" name= "table_id" value= "<?php echo $table_id?>">
                                 <input type="hidden" name="id" value="<?= $row['account_id'] ?>">
 
-                                <label for="name">Name:</label>
-                                <input type="text" name="name" value="<?= htmlspecialchars($row['name']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="address">Address:</label>
-                                <input type="text" name="address" value="<?= htmlspecialchars($row['address']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="email">Email:</label>
-                                <textarea name="email" class="w-full"><?php echo htmlspecialchars(($row['email']))?></textarea><br>
-
-                                <label for="password">Price:</label>
-                                <input type="text" name="password" value="<?= htmlspecialchars($row['password']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <label for="account_type">Account Type:</label><br>
-                                <input type="text" name="account_type" value="<?= htmlspecialchars($row['account_type']) ?>" class="p-2 border rounded mb-4" required><br>
-
-                                <button type="submit" class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600">Update</button>
-                                <button type="button" class="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600" onclick="document.getElementById('editForm<?= $row['account_id'] ?>').classList.add('hidden')">Cancel</button>
+                                <div class="flex justify-around">
+                                    <div class="flex flex-col mx-4">
+                                        <div class="w-full flex justify-end items-center">
+                                            <label for="name">Name:</label>
+                                            <input type="text" name="name" value="<?= htmlspecialchars($row['name']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                        <div class="w-full flex justify-between items-center">
+                                            <label for="address">Address:</label>
+                                            <input type="text" name="address" value="<?= htmlspecialchars($row['address']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col mx-4">
+                                        <div class="w-full flex justify-end items-center">
+                                            <label for="email">Email:</label>
+                                            <input type="text" name="email" value="<?= htmlspecialchars($row['email']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                        <div class="w-full flex justify-between items-center">
+                                            <label for="password">Password:</label>
+                                            <input type="text" name="password" value="<?= htmlspecialchars($row['password']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-center items-center">
+                                    <label for="account_type">Account Type:</label><br>
+                                    <input type="text" name="account_type" value="<?= htmlspecialchars($row['account_type']) ?>" class="p-2 border rounded w-[300px] mx-2" required><br>
+                                </div>
+                                <div class="flex justify-around items-center">
+                                    <button type="submit" class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600">Update</button>
+                                    <button type="button" class="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600" onclick="document.getElementById('editForm<?= $row['account_id'] ?>').classList.add('hidden')">Cancel</button>
+                                </div>
+                                
                             </form>
                         </td>
                     </tr>

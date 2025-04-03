@@ -45,14 +45,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 [font-family:'Kanit']">
 
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Product Details</h1>
 
         <!-- Flex container for the layout -->
-        <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 mt-[50px]">
 
             <!-- Product Info on the Left -->
             <div class="flex-1">
@@ -69,7 +70,7 @@
 
             <!-- Product Image on the Right -->
             <div class="flex-1">
-                <img src="<?=htmlspecialchars($product['image']) ?>" alt="Product Image" class="w-full h-auto object-cover rounded shadow-md">
+                <img src="<?=htmlspecialchars($product['image']) ?>" alt="Product Image" class="w-full h-auto object-cover rounded shadow-xl">
             </div>
 
         </div>

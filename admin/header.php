@@ -1,14 +1,14 @@
 
     <?php if (basename($_SERVER['PHP_SELF']) != 'index.php'): ?>
-    <div class="flex justify-center items-center mx-4">
+    <div class="flex justify-center items-center">
         <form method="GET" action="records.php">
             <input type="hidden" name="table_id" value="<?= $table_id ?>">
             <input type="text" name="search" placeholder="Search..." class="p-2 border rounded" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Search</button>
+            <button type="submit" class="bg-[#dfe0dc] py-2 px-4 rounded hover:bg-[#808080] text-[#0d0f0f]" >Search</button>
             <a href="index.php" class="btn bg-[#dfe0dc] p-2 rounded hover:bg-[#808080] mx-4 my-2 text-[#0d0f0f]">Home</a>
         </form>
     </div>
-        <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onclick="document.getElementById('addModal').classList.remove('hidden')">Add New Record</button>
+        <button class="bg-[#dfe0dc] py-2 px-4 rounded hover:bg-[#808080] text-[#0d0f0f]" onclick="document.getElementById('addModal').classList.remove('hidden')">Add New Record</button>
         <?php endif; ?>
         <button id="logoutBtn" class="bg-[#dfe0dc] p-2 rounded text-[#0d0f0f] hover:bg-[#808080] mx-4 my-2 text-[#0d0f0f]">Logout</button>
 <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex justify-center items-center">
