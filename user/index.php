@@ -12,12 +12,12 @@ include('../connections.php');
 
 
 // Handle "Add to Cart" form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $account_id = $_SESSION['account_id'];
     $product_id = $_POST['product_id'];
+    $action = $_POST['action'] ?? 'add'; // Default action is "add"
 
-    echo "<h1>here</h1>";
-    // Fetch product details
+    // Fetch product details including stock
     $product_stmt = $connections->prepare("SELECT * FROM products WHERE product_id = ?");
     $product_stmt->bind_param("i", $product_id);
     $product_stmt->execute();
@@ -28,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category = $product_result["category"];
         $image = $product_result["image"];
         $price = $product_result["price"];
-        $stock = $product_result["stock"]; // Fetch the available stock
-        $quantity = 1; // Default quantity
+        $stock = $product_result["stock"]; // Available stock
+        $quantity = 1; // Default quantity for adding new item
 
         // Check if the item is already in the cart
         $stmt = $connections->prepare("SELECT quantity FROM cart WHERE account_id = ? AND product_id = ?");
@@ -37,28 +37,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $result = $stmt->get_result();
 
+        // Determine the new quantity based on the action
         if ($result->num_rows > 0) {
-            // If product exists, get current quantity
+            // If product exists in cart, get the current quantity
             $row = $result->fetch_assoc();
-            $new_quantity = $row['quantity'] + 1;
+            $current_quantity = $row['quantity'];
 
-            // Check if the new quantity exceeds the available stock
-            if ($new_quantity > $stock) {
-                // Pass the error message to the frontend using a session variable
+            // Increase or decrease quantity
+            if ($action == 'increase') {
+                $new_quantity = $current_quantity + 1;
+            } elseif ($action == 'decrease') {
+                $new_quantity = $current_quantity - 1;
+            } else {
+                $new_quantity = $current_quantity + 1;
+            }
+
+            // Handle stock limitation (for increase and add)
+            if (($action == 'increase' || $action == 'add') && $new_quantity > $stock) {
                 $_SESSION['error_message'] = "Cannot add more than available stock!";
                 header("Location: " . $_SERVER['PHP_SELF']);
                 exit();
-            } else {
-                // Update quantity in the cart
+            }
+
+            // Update or remove the item based on the new quantity
+            if ($new_quantity > 0) {
                 $update_stmt = $connections->prepare("UPDATE cart SET quantity = ? WHERE account_id = ? AND product_id = ?");
                 $update_stmt->bind_param("iii", $new_quantity, $account_id, $product_id);
                 $update_stmt->execute();
-                // Redirect to avoid form resubmission issues
-                header("Location: ".$_SERVER['PHP_SELF']);
-                exit();
+            } else {
+                // Remove the item if quantity is 0 or less
+                $delete_stmt = $connections->prepare("DELETE FROM cart WHERE account_id = ? AND product_id = ?");
+                $delete_stmt->bind_param("ii", $account_id, $product_id);
+                $delete_stmt->execute();
             }
         } else {
-            // Check if the requested quantity exceeds available stock
+            // Adding a new product to the cart
             if ($quantity > $stock) {
                 $_SESSION['error_message'] = "Cannot add more than available stock!";
                 header("Location: " . $_SERVER['PHP_SELF']);
@@ -68,14 +81,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $insert_stmt = $connections->prepare("INSERT INTO cart (account_id, product_id, product_name, product_img, quantity, price) VALUES (?, ?, ?, ?, ?, ?)");
                 $insert_stmt->bind_param("iissii", $account_id, $product_id, $name, $image, $quantity, $price);
                 $insert_stmt->execute();
-                // Redirect to avoid form resubmission issues
-                header("Location: ".$_SERVER['PHP_SELF']);
-                exit();
             }
         }
-
-        
     }
+
+    // Redirect to the same page to avoid form resubmission
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // Fetch all products grouped by category

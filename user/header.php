@@ -4,19 +4,22 @@
 
     // Get the user's account ID from the session
     $account_id = $_SESSION['account_id'] ?? null;
-
+    
     // Fetch the total number of items in the cart for the logged-in user
-    $total_items_query = $connections->prepare("SELECT SUM(quantity) as total_items FROM cart WHERE account_id = ?");
+    $total_items_query = $connections->prepare("SELECT SUM(c.quantity) as total_items FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.account_id = ? AND p.stock >= c.quantity");
     $total_items_query->bind_param("i", $account_id);
     $total_items_query->execute();
     $total_items_result = $total_items_query->get_result();
     $total_items = $total_items_result->fetch_assoc()['total_items'] ?? 0;
 
+    
+
     // Fetch cart items for the sidebar
-    $cart_query = $connections->prepare("SELECT product_name, price, quantity, product_img FROM cart WHERE account_id = ?");
+    $cart_query = $connections->prepare("SELECT c.product_name, c.price, c.quantity, c.product_img, c.product_id FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.account_id = ? AND p.stock >= c.quantity");
     $cart_query->bind_param("i", $account_id);
     $cart_query->execute();
     $cart_result = $cart_query->get_result();
+
 ?>
 
 <div class="fixed top-0 left-0 right-0 bg-[#0d0f0f] text-[#dfe0dc] p-4 flex justify-between items-center shadow-md z-50">
@@ -51,9 +54,22 @@
                 <?php while ($cart_item = $cart_result->fetch_assoc()): ?>
                     <li class="flex items-center space-x-2 mb-4">
                         <img src="<?= htmlspecialchars($cart_item['product_img']) ?>" alt="Product Image" class="w-16 h-16 object-cover">
-                        <div>
+                        <div class="flex-1">
                             <p class="font-semibold"><?= htmlspecialchars($cart_item['product_name']) ?></p>
                             <p>₱<?= htmlspecialchars($cart_item['price']) ?> x <?= htmlspecialchars($cart_item['quantity']) ?></p>
+                        </div>
+                        <!-- Increase and Decrease Quantity -->
+                        <div class="flex space-x-1">
+                            <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="inline">
+                                <input type="hidden" name="product_id" value="<?= $cart_item['product_id'] ?>">
+                                <input type="hidden" name="action" value="decrease">
+                                <button type="submit" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">-</button>
+                            </form>
+                            <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="inline">
+                                <input type="hidden" name="product_id" value="<?= $cart_item['product_id'] ?>">
+                                <input type="hidden" name="action" value="increase">
+                                <button type="submit" class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">+</button>
+                            </form>
                         </div>
                     </li>
                 <?php endwhile; ?>
@@ -65,6 +81,7 @@
         <button id="closeCartBtn" class="mt-2 p-2 bg-red-500 text-white rounded hover:bg-red-600">Close</button>
     </div>
 </div>
+
 
 <script src="cart.js"></script>
 <script>
