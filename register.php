@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         timer: 3000, // 3 seconds timer
                         timerProgressBar: true, 
                         willClose: () => {
-                            window.location.href = 'register.php'; // Redirect after timer
+                            window.location.href = 'index.php'; // Redirect after timer
                         }
                     });
                 });
@@ -87,23 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img class="w-[96px] h-[96px]" src="https://img.icons8.com/fluency-systems-regular/96/add-user-male--v1.png" alt="add-user-male--v1"/>
             <h3 class="text-[#0d0f0f] text-3xl">Member Registration</h3>
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="px-4 py-2 bg-[#0d0f0f] rounded-3xl border-4 shadow flex flex-col justify-center items-center w-full">
-                <div class="w-full mx-4 my-2 text-xl"><label>Name:</label></div>
+                <div class="w-full mx-4 my-2 text-xl text-white"><label>Name:</label></div>
                 <input class="w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="text" name="name" value="<?php echo $name; ?>">
                 <span class="text-[#dc3545]"><?php echo $nameErr; ?></span>
 
-                <div class="w-full mx-4 my-2 text-xl"><label>Address:</label></div>
+                <div class="w-full mx-4 my-2 text-xl text-white"><label>Address:</label></div>
                 <input class="w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="text" name="address" value="<?php echo $address; ?>">
                 <span class="text-[#dc3545]"><?php echo $addressErr; ?></span>
 
-                <div class="w-full mx-4 my-2 text-xl"><label>Email:</label></div>
+                <div class="w-full mx-4 my-2 text-xl text-white"><label>Email:</label></div>
                 <input class="w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="text" name="email" value="<?php echo $email; ?>">
                 <span class="text-[#dc3545]"><?php echo $emailErr; ?></span>
 
-                <div class="w-full mx-4 my-2 text-xl"><label>Password:</label></div>
+                <div class="w-full mx-4 my-2 text-xl text-white"><label>Password:</label></div>
                 <input class="w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="password" name="password" value="<?php echo $password; ?>">
                 <span class="text-[#dc3545]"><?php echo $passwordErr; ?></span>
 
-                <div class="w-full mx-4 my-2 text-xl"><label>Confirm Password:</label></div>
+                <div class="w-full mx-4 my-2 text-xl text-white"><label>Confirm Password:</label></div>
                 <input class="w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="password" name="cpassword" value="<?php echo $cpassword; ?>">
                 <span class="text-[#dc3545]"><?php echo $cpasswordErr; ?></span>
 

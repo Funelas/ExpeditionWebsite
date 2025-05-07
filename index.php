@@ -55,17 +55,17 @@
 </head>
 <body class= "w-full h-full">
 <div class="w-full bg-[#0d0f0f]"><?php include('nav.php')?></div>
-    <div class="[font-family:'Kanit'] bg-[#dfe0dc] w-full h-full flex flex-col lg:flex-row lg:justify-around lg:items-around justify-center items-center text-[#dfe0dc]">
+    <div class="[font-family:'Kanit'] bg-[#dfe0dc] mx-auto w-full h-full flex flex-col lg:flex-row lg:items-center justify-center items-center text-[#dfe0dc]">
         <?php include ('header.php');?>
-        <div class="w-full md:w-[50%] px-4 py-2 flex flex-col justify-center items-center">
-            <img class="w-[96px] w-[96px]" src="https://img.icons8.com/fluency-systems-regular/96/user-male-circle--v1.png" alt="user-male-circle--v1"/>
+        <div class="px-2 py-1 flex flex-col justify-center items-center lg:w-[50%] md:w-[75%]">
+            <img class="md:w-[96px] w-[67px]" src="https://img.icons8.com/fluency-systems-regular/96/user-male-circle--v1.png" alt="user-male-circle--v1"/>
             <h3 class="text-[#0d0f0f] text-3xl">Member Login</h3>
-            <form action="<?php echo $_SERVER['PHP_SELF']?>" method= "POST" class= "px-4 py-2 px-4 py-2 bg-[#0d0f0f] rounded-3xl border-4 shadow flex flex-col justify-center items-center md:w-[50%] lg:w-[50%]">
+            <form action="<?php echo $_SERVER['PHP_SELF']?>" method= "POST" class= "px-4 py-2 bg-[#0d0f0f] rounded-3xl border-4 shadow flex flex-col justify-center items-center md:w-[75%] w-full">
                 <div class="flex flex-end w-full mx-4 my-2 text-xl"><h3>Email:</h3></div>
-                <input class= "w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="text" name = "email" value="<?php echo $email;?>">
+                <input class= "w-full rounded-full px-4 py-2 text-[#0d0f0f] md:text-xl text-md" type="text" name = "email" value="<?php echo $email;?>">
                 <span class= 'text-[#dc3545]'><?php echo $emailErr?></span>
                 <div class="flex flex-end w-full mx-4 my-2 text-xl"><h3>Password:</h3></div>
-                <input class= "w-full rounded-full px-4 py-2 text-[#0d0f0f] text-xl" type="password" name = "password" value="<?php echo $password; ?>">
+                <input class= "w-full rounded-full px-4 py-2 text-[#0d0f0f] md:text-xl text-md" type="password" name = "password" value="<?php echo $password; ?>">
                 <span class= 'text-[#dc3545]'><?php echo $passwordErr?></span><br>
                 <input type="submit" value= "Submit" class="rounded-xl bg-[#808080] hover:bg-green-500 hover:text-white w-full px-2 py-1 mb-3">
                 <span>Still not registered?<a href="register.php" class="text-[#dc3545] hover:text-green-500"> Click Here!</a></span>
